@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All pictures{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+        {% for obj in pics %}
+        <ul class="w-25" style="list-style-type:none">
+            <li>
+        <div class="card">
+
+            <div class="card-body">
+                <h4 class="card-title">{{obj.name |capfirst}}</h4>
+
+
+
+                <i class="far fa-calendar-alt"></i> <small>Created :{{ obj.created_on|date:" d M, Y" }}</small>
+                <hr/>
+                                        <img src="{{obj.picture.url}}" width="200" height="100">
+                <hr/>
+                <a href="{% url 'picture_detail' obj.uuid%} " class="btn-dark btn-sm" role="button">View More</a>
+                <a href="{% url 'edit_picture' obj.uuid%} " class="btn-info btn-sm" role="button">Edit</a>
+                <a href="{% url 'delete_picture' obj.uuid%} " class="btn-danger btn-sm" role="button">Delete</a>
+
+            </div>
+        </div>
+            </li>
+        </ul>
+        {% endfor %}
+
+
+
+
+
+
+</div>
+
+
+{% endblock %}

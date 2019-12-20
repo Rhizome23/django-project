@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+
+<!--
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+-->
+<div class="container pt-4 pb-4">
+        <div class="col-4">
+
+          {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
+          {% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+
+  <div class="form-group">
+    <label for="username">Username :</label>
+    <input type="text" class="form-control" id="username" name="username">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd" name="password">
+  </div>
+
+  <button type="submit" class="btn btn-light">Submit</button>
+      <input type="hidden" name="next" value="{{ next }}" />
+
+</form>
+
+
+</div>
+</div> <!-- /container -->
+
+
+
+
+
+
+
+
+{% endblock %}

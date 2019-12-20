@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All posts{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+        {% for obj in posts %}
+        <ul class="w-25" style="list-style-type:none">
+            <li>
+        <div class="card">
+
+            <div class="card-body">
+                <h4 class="card-title">{{obj.title |capfirst}}</h4>
+                <span class="badge badge-info text-light">Format : {{obj.document_type}} </span>
+
+                                        <span class="badge badge-warning text-light mt-1">Public doc  </span></br>
+
+
+                <i class="far fa-calendar-alt"></i> <small>Created :{{ obj.created_on|date:" d M, Y" }}</small>
+                <p class="card-text text-justify">{{obj.summary |truncatechars:200}} </p>
+                <a href="{% url 'post_detail' obj.uuid%} " class="btn-dark btn-sm" role="button">View More</a>
+
+
+            </div>
+        </div>
+            </li>
+        </ul>
+        {% endfor %}
+</div>
+
+
+{% endblock %}

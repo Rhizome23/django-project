@@ -1,0 +1,38 @@
+<!-- templates/home.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- Call to action -->
+<div class="pb-5 mt-0 pt-0 call-to-action">
+    <div class="container pt-5 ">
+        <div class="row">
+            <div class="p-4 col-lg-8">
+                <h2 class="mb-3">What it is about ?</h2>
+                <div class="blockquote text-muted">
+                    <p class="mb-0">
+                        The Ipython project, name is now Jupyter, is an interactive computational environment where you
+                        can combine code execution, rich text, mathematics, plots and rich media. This interactive
+                        environment generate files named <b>Notebooks</b>. This website provide an easy way other than GitHub
+                        to share my Notebooks or Markdown documents.</p>
+                </div>
+            </div>
+            <div class="col-md-4 align-self-center">
+                <img class="img-fluid d-block img-thumbnail " src="{% static 'call-to-action.jpg' %}"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
