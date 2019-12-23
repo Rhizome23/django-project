@@ -46,9 +46,6 @@ if os.environ.get('ENV') == 'PRODUCTION':
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-if os.environ.get('ENV') == 'PRODUCTION':
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
 
 ALLOWED_HOSTS = ['localhost','.herokuapp.com']
 
@@ -157,3 +154,7 @@ AWS_S3_ENCRYPTION = True
 AWS_S3_REGION_NAME = 'eu-west-3'  # change to your region
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
+
+if os.environ.get('ENV') == 'PRODUCTION':
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)

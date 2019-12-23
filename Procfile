@@ -1,1 +1,1 @@
-web: gunicorn rhizome23.wsgi
+web: gunicorn storage_app.wsgi
