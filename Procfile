@@ -1,1 +1,1 @@
-web: gunicorn storage_app.wsgi
+web: gunicorn dj_project.wsgi
