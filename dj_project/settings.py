@@ -145,10 +145,10 @@ if os.environ.get('ENV') == 'PRODUCTION':
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 #PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
 #STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
-STATIC_ROOT = os.path.join(BASE_DIR, "/storage_app/static")
+STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 STATIC_URL = '/static/'
 
-print('static root', STATIC_ROOT)
+#print('static root', STATIC_ROOT)
 
 
 #STATICFILES_DIRS =["/static/"]
