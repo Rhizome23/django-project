@@ -15,8 +15,6 @@ import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -33,21 +31,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 else:
     DEBUG = True
 
-#if os.environ.get('ENV') == 'PRODUCTION':
-
-    # Static files settings
-    #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    #STATIC_URL ='/static/'
-    # Extra places for collectstatic to find static files.
-    #STATICFILES_DIRS = (
-    #    os.path.join(BASE_DIR, 'static'),
-    #)
-    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-
 ALLOWED_HOSTS = ['localhost','.herokuapp.com']
-
 
 # Application definition
 
@@ -135,14 +119,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-STATIC_URL ='/static/'
-STATICFILES_DIRS =["/static/"]
+#STATIC_URL ='/static/'
+#STATICFILES_DIRS =["/static/"]
 
 # Redirect after login and logout
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
@@ -157,3 +139,24 @@ AWS_S3_SIGNATURE_VERSION = 's3v4'
 if os.environ.get('ENV') == 'PRODUCTION':
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+#PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
+#STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "/storage_app/static")
+STATIC_URL = '/static/'
+
+print('static root', STATIC_ROOT)
+
+
+#STATICFILES_DIRS =["/static/"]
+
+# Extra lookup directories for collectstatic to find static files
+#STATICFILES_DIRS = (
+#    os.path.join(PROJECT_ROOT, 'static'),
+#)
+
+#  Add configuration for static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
