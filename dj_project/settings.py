@@ -116,16 +116,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-#STATIC_URL ='/static/'
-#STATICFILES_DIRS =["/static/"]
-
 # Redirect after login and logout
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+# AWS settings
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -140,18 +135,9 @@ if os.environ.get('ENV') == 'PRODUCTION':
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-#PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
-#STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 STATIC_URL = '/static/'
-
-#print('static root', STATIC_ROOT)
-
-
-#STATICFILES_DIRS =["/static/"]
 
 # Extra lookup directories for collectstatic to find static files
 #STATICFILES_DIRS = (
