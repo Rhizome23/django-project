@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-
+from tinymce.models import HTMLField
 
 DOCUMENT_TYPE = (
     ('MARKDOWN','Markdown'),
@@ -16,9 +16,12 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     public = models.BooleanField(default=False)
-    #body = models.TextField()
-    summary = models.TextField(blank=True, max_length=1000)
+    #summary = models.TextField(blank=True, max_length=1000)
+    summary = HTMLField()
+
+
     content = models.FileField()
+
     document_type = models.CharField(max_length=140,
                                choices=DOCUMENT_TYPE, default="RAW")
 
