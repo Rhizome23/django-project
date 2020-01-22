@@ -1,11 +1,12 @@
 from django import forms
 from .models import Post
 from .models import Picture
+from ckeditor_uploader.widgets import  CKEditorUploadingWidget
 
 
 class PostForm(forms.ModelForm):
-    #summary= forms.CharField(required=False,
-     #                 widget=TinyMCEWidget(attrs={'placeholder': 'Enter description'}), max_length=100)
+    summary= forms.CharField(required=False,widget=CKEditorUploadingWidget())
+
     class Meta:
         model = Post
 

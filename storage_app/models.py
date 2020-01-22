@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-from tinymce.models import HTMLField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 DOCUMENT_TYPE = (
     ('MARKDOWN','Markdown'),
@@ -17,7 +17,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     public = models.BooleanField(default=False)
     #summary = models.TextField(blank=True, max_length=1000)
-    summary = HTMLField()
+    summary = RichTextUploadingField()
 
 
     content = models.FileField()

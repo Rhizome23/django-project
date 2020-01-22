@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
     'storage_app',
 ]
 
@@ -139,6 +141,8 @@ if os.environ.get('ENV') == 'PRODUCTION':
 STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 STATIC_URL = '/static/'
 
+
+
 # Extra lookup directories for collectstatic to find static files
 #STATICFILES_DIRS = (
 #    os.path.join(PROJECT_ROOT, 'static'),
@@ -163,3 +167,19 @@ TINYMCE_DEFAULT_CONFIG = {
 
                          }
 #https://overiq.com/django-1-10/integrating-ckeditor-in-django/
+####################################
+##  CKEDITOR CONFIGURATION ##
+####################################
+
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
+}
+
+###################################
