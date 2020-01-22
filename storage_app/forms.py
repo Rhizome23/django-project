@@ -1,15 +1,11 @@
 from django import forms
 from .models import Post
 from .models import Picture
-from tinymce.widgets import TinyMCE
 
-class TinyMCEWidget(TinyMCE):
-    def use_required_attribute(self, *args):
-        return False
 
 class PostForm(forms.ModelForm):
-    summary= forms.CharField(required=False,
-                      widget=TinyMCEWidget(attrs={'placeholder': 'Enter description'}), max_length=100)
+    #summary= forms.CharField(required=False,
+     #                 widget=TinyMCEWidget(attrs={'placeholder': 'Enter description'}), max_length=100)
     class Meta:
         model = Post
 

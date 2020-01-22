@@ -5,11 +5,6 @@ from django.contrib import messages
 from .forms import PostForm, PictureForm
 from urllib.request import urlopen
 
-from django.http import HttpResponse
-import json
-import os
-import boto3
-#import request
 
 # Import the exporter
 import markdown
@@ -20,36 +15,6 @@ from bs4 import BeautifulSoup
 
 def home_page(request):
     return render(request, 'home.html', {})
-
-#https://devcenter.heroku.com/articles/s3-upload-python#direct-uploading
-# https://stackabuse.com/uploading-files-to-aws-s3-with-python-and-django/
-def sign_s3(request):
-  S3_BUCKET = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-
-  #file_name = request.args.get('file_name')
-  file_name = request.GET['file_name']
-  print("file_name" , file_name)
-  file_type = request.GET['file_type']
-  print("file type", file_type)
-
-  s3 = boto3.client('s3')
-
-  presigned_post = s3.generate_presigned_post(
-    Bucket = S3_BUCKET,
-    Key = file_name,
-    Fields = {"acl": "public-read", "Content-Type": file_type},
-    Conditions = [
-      {"acl": "public-read"},
-      {"Content-Type": file_type}
-    ],
-    ExpiresIn = 3600
-  )
-
-  return HttpResponse( json.dumps({
-    'data': presigned_post,
-    'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-  })
-  )
 
 
 

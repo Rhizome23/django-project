@@ -14,6 +14,5 @@ urlpatterns = [
         path("picture_detail/<uuid:uuid>/", views.picture_detail, name="picture_detail"),
         path('post_form', views.post_form, name='post_form'),
         path('picture_form', views.picture_form, name='picture_form'),
-        path('sign_s3',views.sign_s3, name='sign_s3')
 
 ]
