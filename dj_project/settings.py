@@ -42,10 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'ckeditor',
     'ckeditor_uploader',
     'storage_app',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,24 +125,44 @@ USE_TZ = True
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# AWS settings
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME =os.environ.get('AWS_STORAGE_BUCKET_NAME')
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_DEFAULT_ACL = None
-AWS_S3_ENCRYPTION = True
-AWS_S3_REGION_NAME = 'eu-west-3'  # change to your region
-AWS_S3_SIGNATURE_VERSION = 's3v4'
+#USE_S3 = os.getenv('USE_S3') == 'TRUE'
+USE_S3 = True
 
+if USE_S3:
+        # AWS settings
+        AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+        AWS_STORAGE_BUCKET_NAME =os.environ.get('AWS_STORAGE_BUCKET_NAME')
+        AWS_DEFAULT_ACL = None
+        AWS_S3_CUSTOM_DOMAIN = '%s.s3.eu-west-3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+        AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+        #### 3 lignes ajoutés par moi ci dessous
+        AWS_S3_ENCRYPTION = True
+        AWS_S3_REGION_NAME = 'eu-west-3'
+        AWS_S3_SIGNATURE_VERSION = 's3v4'
+        # s3 static settings
+        STATIC_LOCATION = 'static'
+        STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+        STATICFILES_STORAGE = 'storage_app.storage_backends.StaticStorage'
+        # s3 public media settings
+        PUBLIC_MEDIA_LOCATION = 'media'
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+        DEFAULT_FILE_STORAGE = 'storage_app.storage_backends.PublicMediaStorage'
+        # s3 private media settings
+        PRIVATE_MEDIA_LOCATION = 'private'
+        PRIVATE_FILE_STORAGE = 'storage_app.storage_backends.PrivateMediaStorage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/mediafiles/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 if os.environ.get('ENV') == 'PRODUCTION':
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
 # Static files (CSS, JavaScript, Images)
-STATIC_ROOT = os.path.join(BASE_DIR, "assets")
-STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 
 
@@ -149,23 +172,9 @@ STATIC_URL = '/static/'
 #)
 
 #  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-TINYMCE_DEFAULT_CONFIG = {
-    'selector': 'textarea',
-    'height': 300,
-    'width': 600,
-    'plugins':'help codesample image, imagetools, media,link,code',
-    'toolbar': "styleselect |undo redo | bold italic | alignleft aligncenter alignright | link image media codesample code",
-    'image_title': True,
-    'automatic_uploads': True,
-    'image_advtab': True,
-    'file_picker_types': 'image',
-     'file_picker_callback': "call",
-     #'paste_data_images':True,
-      #'images_upload_url':True,
 
-                         }
 #https://overiq.com/django-1-10/integrating-ckeditor-in-django/
 ####################################
 ##  CKEDITOR CONFIGURATION ##
@@ -174,7 +183,7 @@ TINYMCE_DEFAULT_CONFIG = {
 CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_IMAGE_BACKEND = "pillow"
+#CKEDITOR_IMAGE_BACKEND = "pillow"
 
 CKEDITOR_CONFIGS = {
     'default': {
