@@ -8,6 +8,20 @@ DOCUMENT_TYPE = (
     ('RAW','Raw Text')
 )
 
+class FileDocument(models.Model):
+    uuid = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False,
+    )
+    created_on = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=255)
+    public = models.BooleanField(default=False)
+    summary = models.TextField(blank=True, max_length=1000)
+    content = models.FileField()
+    document_type = models.CharField(max_length=140,
+                                     choices=DOCUMENT_TYPE, default="RAW")
+    def __str__(self):
+        return self.title
+
 
 class Post(models.Model):
     uuid = models.UUIDField(
@@ -16,14 +30,11 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     public = models.BooleanField(default=False)
-    #summary = models.TextField(blank=True, max_length=1000)
-    summary = RichTextUploadingField()
-
-
-    content = models.FileField()
-
-    document_type = models.CharField(max_length=140,
-                               choices=DOCUMENT_TYPE, default="RAW")
+    summary = models.TextField(blank=True, max_length=1000)
+    content = RichTextUploadingField()
+    #content = models.FileField()
+    #document_type = models.CharField(max_length=140,
+     #                          choices=DOCUMENT_TYPE, default="RAW")
 
     def __str__(self):
         return self.title

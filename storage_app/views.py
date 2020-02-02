@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from storage_app.models import Post, Picture
+from storage_app.models import Post, Picture, FileDocument
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import PostForm, PictureForm
+from .forms import PostForm, PictureForm, FileDocumentForm
 from urllib.request import urlopen
 
 
@@ -16,9 +16,6 @@ from bs4 import BeautifulSoup
 def home_page(request):
     return render(request, 'home.html', {})
 
-
-
-
 @login_required
 def all_posts(request):
     posts = Post.objects.all().order_by('-created_on')
@@ -26,6 +23,15 @@ def all_posts(request):
         "posts": posts,
     }
     return render(request, "all_posts.html", context)
+
+@login_required
+def all_file_documents(request):
+    file_documents = FileDocument.objects.all().order_by('-created_on')
+    context = {
+        "file_documents": file_documents,
+    }
+    return render(request, "all_file_documents.html", context)
+
 
 @login_required
 def all_pictures(request):
@@ -42,10 +48,8 @@ def public_posts(request):
     }
     return render(request, "public_posts.html", context)
 
-
-
-def post_detail(request, uuid):
-    post = Post.objects.get(uuid=uuid)
+def file_document_detail(request, uuid):
+    post = FileDocument.objects.get(uuid=uuid)
     aws_url = post.content.url
     file_on_aws = urlopen(aws_url).read().decode()
     if post.document_type == "NOTEBOOK" :
@@ -145,6 +149,17 @@ def post_detail(request, uuid):
             "title":post.title,
             "post": post,
         }
+    return render(request, "file_document_detail.html", context)
+
+
+def post_detail(request, uuid):
+    post = Post.objects.get(uuid=uuid)
+    #aws_url = post.content.url
+    #file_on_aws = urlopen(aws_url).read().decode()
+    context = {
+            "title":post.title,
+            "post": post,
+        }
     return render(request, "post_detail.html", context)
 
 
@@ -161,6 +176,21 @@ def post_form(request):
         return render(request, "home.html", {})
     context = {"form": form}
     return render(request, "post_form.html", context)
+
+@login_required
+def file_document_form(request):
+    form = FileDocumentForm(request.POST or None,  request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        #file_type = instance.url.split('.')[-1]
+        #if file_type not in IMAGE_FILE_TYPES:
+        #        return render(request, 'profile_maker/error.html')
+        messages.success(request, "Successfully created")
+        return render(request, "home.html", {})
+    context = {"form": form}
+    return render(request, "file_document_form.html", context)
+
 
 @login_required
 def picture_form(request):
@@ -187,6 +217,20 @@ def edit(request, uuid):
         return render(request, "home.html", {})
     context = {"form": form}
     return render(request, "post_form.html", context)
+
+@login_required
+def edit_file_document(request, uuid):
+    file_document = FileDocument.objects.get(uuid=uuid)
+    form = FileDocumentForm(request.POST or None, request.FILES or None, instance=file_document)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request, "Successfully modify")
+        return render(request, "home.html", {})
+    context = {"form": form}
+    return render(request, "file_document_form.html", context)
+
+
 
 @login_required
 def edit_picture(request, uuid):
@@ -216,6 +260,18 @@ def delete(request, uuid):
         "posts": posts,
     }
     return render(request, "all_posts.html", context)
+
+@login_required
+def delete_file_document(request, uuid):
+    file_document = FileDocument.objects.get(uuid=uuid)
+    file_document.delete()
+    messages.success(request, "Successfully deleted")
+    file_documents = FileDocument.objects.all().order_by('-created_on')
+    context = {
+        "file_documents": file_documents,
+    }
+    return render(request, "all_file_documents.html", context)
+
 
 @login_required
 def delete_picture(request, uuid):

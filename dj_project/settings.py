@@ -139,7 +139,7 @@ if USE_S3:
         #### 3 lignes ajoutés par moi ci dessous
         AWS_S3_ENCRYPTION = True
         AWS_S3_REGION_NAME = 'eu-west-3'
-        AWS_S3_SIGNATURE_VERSION = 's3v4'
+        #AWS_S3_SIGNATURE_VERSION = 's3v4'
         # s3 static settings
         STATIC_LOCATION = 'static'
         STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'

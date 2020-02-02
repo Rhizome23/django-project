@@ -36,22 +36,10 @@
 
                 <div class="card">
                       <div class="card-body">
-                      {% if html_content %}
                         {% autoescape off %}
-                               {{ html_content}}
+                               {{ post.content }}
                         {% endautoescape %}
-                        {% endif %}
-
-                        {% if post %}
-                          <p>{{ post.content | linebreaks }}</p>
-                        {% endif %}
-
-                         {% if md %}
-                              {% autoescape off %}
-                                    {{ md }}
-                              {% endautoescape %}
-<!--                        <img src="{{ post.content.url }}">-->
-                        {% endif %}
+                          
                       </div>
                 </div>
 

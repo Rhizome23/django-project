@@ -63,13 +63,19 @@
                     <a class="nav-link hvr-underline-from-center" href="{% url 'all_posts' %}">All posts</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link hvr-underline-from-center" href="{% url 'all_file_documents' %}">All files</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link hvr-underline-from-center" href="{% url 'all_pictures' %}">All pictures</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link hvr-underline-from-center" href="{% url 'post_form' %}">Create a post</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link hvr-underline-from-center" href="{% url 'file_document_form' %}">Upload a file document</a>
+                </li>
                  <li class="nav-item">
-                    <a class="nav-link hvr-underline-from-center" href="{% url 'picture_form' %}">Upload</a>
+                    <a class="nav-link hvr-underline-from-center" href="{% url 'picture_form' %}">Upload picture</a>
                 </li>
                 {% endif %}
 
