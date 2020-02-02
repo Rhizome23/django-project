@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="row">
+        <div class="col-8">
+
+                <div class="card  mb-4">
+                      <div class="card-header">
+                         {% if title %}
+                           <h1> {{ title}} </h1>
+                          {%endif %}
+                               <h6 class="card-subtitle mb-2">
+                                   &nbsp; &nbsp;<i class="far fa-calendar-alt"></i> Created : {{ created |date:"d M, Y" }}</h6>
+                      </div>
+                     <div class="card-body">
+                           {% if htitles %}
+                            <ul>
+                             {% for key,value in htitles.items %}
+                                    {% if "children" in key %}
+                                            <ul>
+                                            {% for x in value %}
+                                              <li> <a href="#{{x}}">{{x}}</a> </li>
+                                            {% endfor %}
+                                            </ul>
+                                    {% else  %}
+                                <li> <a href="#{{value}}">{{value}}</a> </li>
+                                    {% endif %}
+
+                             {% endfor %}
+                            </ul>
+                        {% endif %}
+                     </div>
+                </div>
+
+                <div class="card">
+                      <div class="card-body">
+                      {% if html_content %}
+                        {% autoescape off %}
+                               {{ html_content}}
+                        {% endautoescape %}
+                        {% endif %}
+
+                        {% if post %}
+                          <p>{{ post.content | linebreaks }}</p>
+                        {% endif %}
+
+                         {% if md %}
+                              {% autoescape off %}
+                                    {{ md }}
+                              {% endautoescape %}
+<!--                        <img src="{{ post.content.url }}">-->
+                        {% endif %}
+                      </div>
+                </div>
+
+        </div>
+
+
+        <div class="col-4">
+                    <div class="card sticky-top">
+                        <div class="card-header bg-warning">Table of contents</div>
+                        <div class="card-body">
+
+
+                            <ul class="list-group">
+                                     {% if htitles %}
+                                         {% for key,value in htitles.items %}
+                                                {% if "children" in key %}
+                                                    {% for x in value %}
+                                                    <a class="list-group-item-my list-group-item-action "
+                                                        href="#{{x}}">-  {{x}}</a>
+                                                    {% endfor %}
+                                                {% else  %}
+                                                       <a class="list-group-item-my  list-group-item-action" style="padding-top:0 padding-bottom:0;
+                                                       padding-left:5; margin:0"
+                                                          href="#{{value}}">{{value}}</a>
+                                                {% endif %}
+                                         {% endfor %}
+                                    {% endif %}
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-warning"><a href="">Top of the page</a> </div>
+                    </div>
+        </div>
+
+
+
+
+</div>
+
+
+{% endblock %}
