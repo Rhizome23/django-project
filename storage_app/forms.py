@@ -1,7 +1,5 @@
 from django import forms
-from .models import Post
-from .models import FileDocument
-from .models import Picture
+from .models import Post, Picture
 from ckeditor_uploader.widgets import  CKEditorUploadingWidget
 
 
@@ -12,13 +10,6 @@ class PostForm(forms.ModelForm):
         model = Post
 
         fields = ['title','public','summary','content']
-
-class FileDocumentForm(forms.ModelForm):
-
-    class Meta:
-        model = FileDocument
-        fields = ['title','public','summary','content','document_type']
-
 
 class PictureForm(forms.ModelForm):
 
