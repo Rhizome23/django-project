@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from storage_app.models import Post, Picture, PrivatePost
+from storage_app.models import Post, Picture
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import PostForm, PictureForm
@@ -104,7 +104,6 @@ def post_detail(request, uuid):
     post = Post.objects.get(uuid=uuid)
     #aws_url = post.content.url
     #file_on_aws = urlopen(aws_url).read().decode()
-    print(post.content)
     soup = BeautifulSoup(post.content, 'lxml')
             # structure full left menu
     dico = dict()
@@ -135,19 +134,9 @@ def post_detail(request, uuid):
 def post_form(request):
     form = PostForm(request.POST or None,  request.FILES or None)
     if form.is_valid():
-        #instance.save()
         instance = form.instance
-        if instance.public == False:
-            p= PrivatePost(content=instance.content)
-            print(instance.content)
-            print(p.content)
-            print(p.uuid)
-            p.save()
-
-        else:
-            instance = form.save(commit=False)
-            instance.save()
-
+        instance = form.save(commit=False)
+        instance.save()
         messages.success(request, "Successfully created")
         return render(request, "home.html", {})
     context = {"form": form}
@@ -185,9 +174,6 @@ def picture_form(request):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        #file_type = instance.url.split('.')[-1]
-        #if file_type not in IMAGE_FILE_TYPES:
-        #        return render(request, 'profile_maker/error.html')
         messages.success(request, "Successfully created")
         return render(request, "home.html", {})
     context = {"form": form}

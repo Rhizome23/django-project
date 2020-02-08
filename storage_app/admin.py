@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, PrivatePost
+from .models import Post
 from django.db import models
 
 class PostModelAdmin(admin.ModelAdmin):
