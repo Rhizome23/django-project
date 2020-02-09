@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import PostForm, PictureForm
 
-
 # Import the exporter
 import markdown
 import nbformat
