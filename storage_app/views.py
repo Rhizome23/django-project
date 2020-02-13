@@ -4,11 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import PostForm, PictureForm
 
+
+import html
 # Import the exporter
 import markdown
 import nbformat
 from nbconvert import HTMLExporter
 from bs4 import BeautifulSoup
+import boto3
 
 def home_page(request):
     return render(request, 'home.html', {})
@@ -119,9 +122,32 @@ def post_detail(request, uuid):
                      if j.name == "h2":
                          list.append(j.text)
 
+    for link in soup.find_all('img'):
+        print(link)
+        url = link['src']
+        short_url= url[:url.index("?")]
+        short_url2 = short_url[35:]
+        print(short_url2)
+
+
+        s3 = boto3.client('s3',config= boto3.session.Config(signature_version='s3v4',region_name='eu-west-3'))
+        new_url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': 'data7-str',
+                'Key': short_url2
+            }
+        )
+        final_new_url = "<img src='" +new_url+ "'/>"
+        link.replace_with(final_new_url)
+        print(final_new_url)
+
+    output_html = html.unescape(soup.prettify())
+
     context = {
             "title":post.title,
             "htitles": dico,
+            "output_html":output_html,
             "post": post,
             "created": post.created_on,
 
