@@ -123,11 +123,11 @@ def post_detail(request, uuid):
                          list.append(j.text)
 
     for link in soup.find_all('img'):
-        print(link)
+        #print(link)
         url = link['src']
         short_url= url[:url.index("?")]
         short_url2 = short_url[35:]
-        print(short_url2)
+        #print(short_url2)
 
 
         s3 = boto3.client('s3',config= boto3.session.Config(signature_version='s3v4',region_name='eu-west-3'))
@@ -140,7 +140,7 @@ def post_detail(request, uuid):
         )
         final_new_url = "<img src='" +new_url+ "'/>"
         link.replace_with(final_new_url)
-        print(final_new_url)
+        #print(final_new_url)
 
     output_html = html.unescape(soup.prettify())
 
