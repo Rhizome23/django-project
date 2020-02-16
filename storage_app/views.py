@@ -3,7 +3,7 @@ from storage_app.models import Post, Picture
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import PostForm, PictureForm
-
+import os
 
 import html
 # Import the exporter
@@ -123,24 +123,20 @@ def post_detail(request, uuid):
                          list.append(j.text)
 
     for link in soup.find_all('img'):
-        #print(link)
         url = link['src']
         short_url= url[:url.index("?")]
         short_url2 = short_url[35:]
-        #print(short_url2)
-
-
         s3 = boto3.client('s3',config= boto3.session.Config(signature_version='s3v4',region_name='eu-west-3'))
+        AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
         new_url = s3.generate_presigned_url(
             ClientMethod='get_object',
             Params={
-                'Bucket': 'data7-str',
+                'Bucket': AWS_STORAGE_BUCKET_NAME,
                 'Key': short_url2
             }
         )
         final_new_url = "<img src='" +new_url+ "'/>"
         link.replace_with(final_new_url)
-        #print(final_new_url)
 
     output_html = html.unescape(soup.prettify())
 
@@ -159,7 +155,6 @@ def post_detail(request, uuid):
 def post_form(request):
     form = PostForm(request.POST or None,  request.FILES or None)
     if form.is_valid():
-        instance = form.instance
         instance = form.save(commit=False)
         instance.save()
         messages.success(request, "Successfully created")
