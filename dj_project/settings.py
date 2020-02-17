@@ -170,27 +170,45 @@ if os.environ.get('ENV') == 'PRODUCTION':
 #    os.path.join(PROJECT_ROOT, 'static'),
 #)
 
-#  Add configuration for static files storage using whitenoise
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-#https://overiq.com/django-1-10/integrating-ckeditor-in-django/
 ####################################
-##  CKEDITOR CONFIGURATION ##
+##  CKEDITOR CONFIGURATION ##*
+## https://pypi.org/project/django-ckeditor/#installation
 ####################################
 
 CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
-#CKEDITOR_IMAGE_BACKEND = "pillow"
 
 CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': None,
-        'config.extraPlugins' : "codesnippet",
+    'custom_ckeditor': {
+        'toolbar':
+        [
+            {'name': 'document', 'items': ['Source', '-', 'Preview','Maximize', 'Print','Undo','Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace',]},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike',  '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink']},
+            {'name': 'insert',
+             'items': ['Image', 'CodeSnippet', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak']},
+            '/', # put this to force next toolbar on new line
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'about', 'items': ['About']},
+
+        ],
+        ## end toolbar config
+        'height': 250,
+        'width': 700,
+        'extra_plugins' : ['codesnippet'],
+        'skin':'moono',
     },
-    }
+}
 
 
-
-###################################

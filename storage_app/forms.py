@@ -4,7 +4,7 @@ from ckeditor_uploader.widgets import  CKEditorUploadingWidget
 
 
 class PostForm(forms.ModelForm):
-    content = forms.CharField(required=False,widget=CKEditorUploadingWidget())
+    content = forms.CharField(required=False,widget=CKEditorUploadingWidget(config_name="custom_ckeditor"))
 
     class Meta:
         model = Post

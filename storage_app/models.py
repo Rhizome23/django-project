@@ -10,7 +10,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     public = models.BooleanField(default=False)
     summary = models.TextField(blank=True, max_length=1000)
-    content = RichTextUploadingField()
+    content = RichTextUploadingField(config_name="custom_ckeditor")
     def __str__(self):
         return self.title
 
