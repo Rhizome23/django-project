@@ -139,16 +139,15 @@ if USE_S3:
         AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
         #### 3 lignes ajoutés par moi ci dessous
         #AWS_S3_ENCRYPTION = True
-        AWS_S3_REGION_NAME = 'eu-west-3'
         AWS_S3_SIGNATURE_VERSION = 's3v4'
         # s3 static settings
         STATIC_LOCATION = 'static'
         STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-        STATICFILES_STORAGE = 'storage_app.storage_backends.StaticStorage'
+        STATICFILES_STORAGE = 'dj_project.storage_backends.StaticStorage'
         # S3 media settings
         AWS_MEDIA_LOCATION = 'media'
         MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/'
-        DEFAULT_FILE_STORAGE = 'storage_app.storage_backends.MediaStorage'
+        DEFAULT_FILE_STORAGE = 'dj_project.storage_backends.MediaStorage'
 
 else:
     STATIC_URL = '/staticfiles/'
@@ -159,18 +158,6 @@ else:
 if os.environ.get('ENV') == 'PRODUCTION':
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
-
-# Static files (CSS, JavaScript, Images)
-#STATIC_ROOT = os.path.join(BASE_DIR, "assets")
-
-
-
-# Extra lookup directories for collectstatic to find static files
-#STATICFILES_DIRS = (
-#    os.path.join(PROJECT_ROOT, 'static'),
-#)
-
-
 
 ####################################
 ##  CKEDITOR CONFIGURATION ##*
@@ -196,17 +183,33 @@ CKEDITOR_CONFIGS = {
                        'Language']},
             {'name': 'links', 'items': ['Link', 'Unlink']},
             {'name': 'insert',
-             'items': ['Image', 'CodeSnippet', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak']},
+             'items': ['Image', 'CodeSnippet', 'Markdown','Table', 'HorizontalRule', 'SpecialChar', 'PageBreak']},
             '/', # put this to force next toolbar on new line
             {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
             {'name': 'about', 'items': ['About']},
+            {'name': 'others'}
 
         ],
         ## end toolbar config
         'height': 250,
         'width': 700,
-        'extra_plugins' : ['codesnippet'],
+        #'extra_plugins' : ['codesnippet'],
+        'extraPlugins': ','.join([
+            'uploadimage',  # the upload image feature
+            # your extra plugins here
+            'codesnippet',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            'devtools',
+            'widget',
+            'lineutils',
+            'dialog',
+            'dialogui',
+            'elementspath'
+        ]),
         'skin':'moono',
     },
 }

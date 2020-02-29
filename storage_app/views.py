@@ -7,7 +7,6 @@ import os
 
 import html
 # Import the exporter
-import markdown
 import nbformat
 from nbconvert import HTMLExporter
 from bs4 import BeautifulSoup
@@ -107,7 +106,7 @@ def post_detail(request, uuid):
     #aws_url = post.content.url
     #file_on_aws = urlopen(aws_url).read().decode()
     soup = BeautifulSoup(post.content, 'lxml')
-            # structure full left menu
+    # structure full left menu
     dico = dict()
     n = 0
     for i in soup.find_all('h1'):
@@ -122,31 +121,28 @@ def post_detail(request, uuid):
                      if j.name == "h2":
                          list.append(j.text)
 
-    for link in soup.find_all('img'):
-        url = link['src']
-        short_url= url[:url.index("?")]
-        short_url2 = short_url[35:]
-        s3 = boto3.client('s3',config= boto3.session.Config(signature_version='s3v4',region_name='eu-west-3'))
-        AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-        new_url = s3.generate_presigned_url(
-            ClientMethod='get_object',
-            Params={
-                'Bucket': AWS_STORAGE_BUCKET_NAME,
-                'Key': short_url2
-            }
-        )
-        final_new_url = "<img src='" +new_url+ "'/>"
-        link.replace_with(final_new_url)
-
-    output_html = html.unescape(soup.prettify())
+    # for link in soup.find_all('img'):
+    #     url = link['src']
+    #     short_url= url[:url.index("?")]
+    #     short_url2 = short_url[35:]
+    #     s3 = boto3.client('s3',config= boto3.session.Config(signature_version='s3v4',region_name='eu-west-3'))
+    #     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    #     new_url = s3.generate_presigned_url(
+    #         ClientMethod='get_object',
+    #         Params={
+    #             'Bucket': AWS_STORAGE_BUCKET_NAME,
+    #             'Key': short_url2
+    #         }
+    #     )
+    #     final_new_url = "<img src='" +new_url+ "'/>"
+    #     link.replace_with(final_new_url)
+    #
+    # output_html = html.unescape(soup.prettify())
 
     context = {
-            "title":post.title,
+            #"title":post.title,
             "htitles": dico,
-            "output_html":output_html,
             "post": post,
-            "created": post.created_on,
-
     }
     return render(request, "post_detail.html", context)
 
